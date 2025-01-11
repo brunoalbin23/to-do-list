@@ -1,0 +1,46 @@
+version: "3.8"
+
+services:
+  frontend:
+    build:
+      context: ./front  # Ruta a tu carpeta "front"
+      dockerfile: Dockerfile
+    container_name: to-do-list-frontend
+    ports:
+      - "5173:5173"  # Mapea el puerto local al puerto del contenedor
+    volumes:
+      - ./front:/usr/src/app  # Monta el código local dentro del contenedor
+      - /usr/src/app/node_modules
+    command: ["npm", "run", "dev", "--", "--host"]
+
+  backend:
+    build:
+      context: ./back  # Ruta a tu carpeta "backend"
+      dockerfile: Dockerfile
+    container_name: to-do-list-backend
+    ports:
+      - "5000:5000"  # Mapea el puerto local al puerto del contenedor
+    volumes:
+      - ./backend:/usr/src/app  # Monta el código local dentro del contenedor
+      - /usr/src/app/node_modules
+    environment:
+      DB_HOST: database
+      DB_USER: user
+      DB_PASSWORD: userpassword
+      DB_NAME: todo_db
+
+  database:
+    image: mysql:8
+    container_name: to-do-list-mysql-db
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: todo_db
+      MYSQL_USER: user
+      MYSQL_PASSWORD: userpassword
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+
+volumes:
+  db_data:
