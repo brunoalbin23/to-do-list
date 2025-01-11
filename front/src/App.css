@@ -2,7 +2,8 @@
 /* General Styles */
 body {
   font-family: 'Arial', sans-serif;
-  background-color: #f4f4f9;
+  background-image: url(../img/pexels-pixabay-531756.jpg);
+  background-size: cover;
   margin: 0;
   padding: 0;
   display: flex;
